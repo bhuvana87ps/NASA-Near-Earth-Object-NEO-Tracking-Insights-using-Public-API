@@ -5,10 +5,10 @@ An interactive **Streamlit** web app that uses NASA's Near-Earth Object API to v
 ---
 
 ## 📦 Project Structure
-├── nasaapi.ipynb        # Jupyter Notebook to extract, transform, and load asteroid data from NASA API into MySQL
-├── app.py               # Streamlit dashboard frontend to explore asteroid data
-├── requirements.txt     # Python dependencies
-└── README.md            # Project documentation (this file)
+├── nasaapi.ipynb        # Jupyter Notebook to extract, transform, and load asteroid data from NASA API into MySQL <br>
+├── app.py               # Streamlit dashboard frontend to explore asteroid data<br>
+├── requirements.txt     # Python dependencies<br>
+└── README.md            # Project documentation (this file)<br>
 
 ---
 
@@ -69,7 +69,7 @@ The `nasaapi.ipynb` notebook:
 ```bash
 git clone https://github.com/yourusername/nasa-neo-tracker.git
 cd nasa-neo-tracker
-
+---
 <h1 align="center">Hi 👋, I'm Bhuvaneswari G</h1>
 <h3 align="center">A passionate frontend developer and Entrepreneur from India</h3>
 
