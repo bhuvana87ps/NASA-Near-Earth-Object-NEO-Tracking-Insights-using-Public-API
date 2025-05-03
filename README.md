@@ -2,7 +2,7 @@
 <h1 align="center">Hi 👋, I'm Bhuvaneswari G</h1>
 <h3 align="center">A passionate frontend developer and Entrepreneur from India</h3>
 
-- 🌱 I’m currently learning **Data Science**
+- 🌱 I’m currently learning **Data Science in Guvi[This text links to gfg](https://write.geeksforgeeks.org/).**
 
 - 💬 Ask me about **Laravel, Front end Development**
 
