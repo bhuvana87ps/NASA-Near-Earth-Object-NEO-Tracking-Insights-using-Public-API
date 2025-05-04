@@ -64,15 +64,44 @@ The `nasaapi.ipynb` notebook:
 ---
 ## 🛠️ Setup & Installation
 
+## 1. Clone the repo
+
+The `nasaapi.ipynb` notebook:
+- Fetches NEO data using NASA’s API
+- Parses up to **10,000+** asteroid entries
+- Extracts properties:
+  - Name, magnitude, diameter, hazard status
+  - Velocity, distance, approach date
+- Loads into **MySQL** with two normalized tables:
+
+### Table: `asteroids`
+| id | name | magnitude | diameter_min_km | diameter_max_km | hazardous |
+
+### Table: `close_approach`
+| neo_reference_id | approach_date | velocity_kmph | au | miss_km | miss_lunar | orbiting_body |
 
 ### 1. Clone the repo
 
 ```bash
 git clone [https://github.com/bhuvana87ps/NASA-Near-Earth-Object-NEO-Tracking-Insights-using-Public-API]
 cd nasa-neo-tracker
- 
+```
 ### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
----
+
+```
+## 3. Set up MySQL
+```bash
+CREATE DATABASE nasa;
+-- Then run the table creation and ETL from nasaapi.ipynb
+```
+## 4. Run the app
+```bash
+streamlit run app.py
+```
+
+
+ 
+
