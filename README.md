@@ -135,4 +135,35 @@ HAVING approach_count > 3;
 
 ```
 
+---
 
+## 🧾 Requirements
+
+```bash
+-  Python 3.8+
+
+-  streamlit
+
+-  plotly
+
+-  pandas
+
+-  pymysql
+
+-  streamlit-option-menu
+
+```
+
+---
+
+## 📚 References
+
+```bash
+-  [NASA NEO Web Service API](https://api.nasa.gov/)
+
+-  [NEO Feed API Reference](www.google.com)
+
+-  [Streamlit Documentation](https://docs.streamlit.io/) 
+```
+
+---
