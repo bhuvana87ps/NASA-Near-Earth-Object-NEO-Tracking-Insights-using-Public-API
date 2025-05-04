@@ -102,6 +102,37 @@ CREATE DATABASE nasa;
 streamlit run app.py
 ```
 
+---
 
- 
+## 📷 Screenshots
+
+```bash
+
+
+```
+
+---
+
+## 🧪 Sample SQL Queries
+
+```bash
+-- Top 10 Fastest Asteroids
+SELECT a.name, MAX(c.relative_velocity_kmph) AS max_velocity
+FROM close_approach c
+JOIN asteroids a ON c.neo_reference_id = a.id
+GROUP BY a.name
+ORDER BY max_velocity DESC
+LIMIT 10;
+
+
+- Hazardous Asteroids with > 3 Approaches
+SELECT a.name, COUNT(*) AS approach_count
+FROM asteroids a
+JOIN close_approach c ON a.id = c.neo_reference_id
+WHERE a.hazardous = 1
+GROUP BY a.name
+HAVING approach_count > 3;
+
+```
+
 
