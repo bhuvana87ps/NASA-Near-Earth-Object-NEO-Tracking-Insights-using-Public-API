@@ -159,7 +159,7 @@ HAVING approach_count > 3;
 ## 📚 References
 
 ```bash
--  [NASA NEO Web Service API](https://api.nasa.gov/)
+- [NASA NEO Web Service API](https://api.nasa.gov/)
 
 -  [NEO Feed API Reference]
 
