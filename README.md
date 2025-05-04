@@ -70,3 +70,10 @@ The `nasaapi.ipynb` notebook:
 git clone [https://github.com/bhuvana87ps/NASA-Near-Earth-Object-NEO-Tracking-Insights-using-Public-API]
 cd nasa-neo-tracker
 ---
+---
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+---
