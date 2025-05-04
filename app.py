@@ -1,10 +1,13 @@
-# --------- SETUP ---------
+# --------- SETUP PACKAGES---------
 import streamlit as st
 import pandas as pd
 import time
-from streamlit_option_menu import option_menu
+import pymysql
+import plotly.express as px 
+from streamlit_option_menu import option_menu 
 
-# First command must be page config
+
+# First command must be page config used wide or centered, anyone
 st.set_page_config(page_title="🚀 NASA NEO Tracker", layout="wide")
 #st.set_page_config(page_title="🚀 NASA NEO Tracker", layout="centered")
 
@@ -37,22 +40,54 @@ def get_connection():
         user="root",
         password="123456",
         database="nasa",
-        cursorclass=pymysql.cursors.DictCursor
+        cursorclass=pymysql.cursors.DictCursor 
+        #This is the object used to interact with the database.
     )
 
 # --------- PAGE SELECTIONS ---------
 if selected == "Dashboard":
-    # Example metrics - you should replace with your own queries
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric(label="🌍 Total Approaches", value="1,230")
-    with col2:
-        st.metric(label="☄️ Hazardous Asteroids", value="54")
-    with col3:
-        st.metric(label="🚀 Fastest Velocity", value="97,500 km/h")
+    # database connection establish data to show in dashboard
+    def load_metrics():
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            # 🌍 Total Approaches
+            cursor.execute("SELECT COUNT(*) AS total FROM close_approach;")
+            total_approaches = cursor.fetchone()["total"]
 
-    st.markdown("### 📈 Overview Chart (Example)")
-    st.line_chart({"Asteroid Approaches": [20, 35, 30, 50, 40, 60, 80]})
+            # ☄️ Hazardous Asteroids
+            cursor.execute("SELECT COUNT(*) AS hazardous FROM asteroids WHERE is_potentially_hazardous_asteroid = 1;")
+            hazardous_count = cursor.fetchone()["hazardous"]
+
+            # 🚀 Fastest Velocity
+            cursor.execute("SELECT MAX(relative_velocity_kmph) AS fastest FROM close_approach;")
+            fastest_velocity = cursor.fetchone()["fastest"]
+
+        connection.close()
+        return total_approaches, hazardous_count, fastest_velocity
+
+    def load_trend_data():
+        connection = get_connection()
+        query = """
+            SELECT DATE_FORMAT(close_approach_date, '%Y-%m') AS month, COUNT(*) AS count
+            FROM close_approach
+            GROUP BY month
+            ORDER BY month;
+        """
+        df = pd.read_sql(query, connection)
+        connection.close()
+        return df
+     # Display Metrics
+    st.subheader("🌌 NASA NEO Tracker Dashboard")
+    st.markdown("Real-time insights into asteroid approaches from NASA's Near-Earth Object API.")
+    # Load and show metrics
+    total, hazardous, fastest = load_metrics()
+    col1, col2, col3 = st.columns(3)
+    col1.metric(label="🌍 Total Approaches", value=f"{total:,}")
+    col2.metric(label="☄️ Hazardous Asteroids", value=f"{hazardous}")
+    col3.metric(label="🚀 Fastest Velocity", value=f"{fastest:,.0f} km/h")
+
+    # Line Chart for Asteroid Approaches Over Time
+     
 
 elif selected == "Filter Criteria":
     # FILTER PAGE
