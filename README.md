@@ -161,7 +161,7 @@ HAVING approach_count > 3;
 ```bash
 -  [NASA NEO Web Service API](https://api.nasa.gov/)
 
--  [NEO Feed API Reference](www.google.com)
+-  [NEO Feed API Reference]
 
 -  [Streamlit Documentation](https://docs.streamlit.io/) 
 ```
