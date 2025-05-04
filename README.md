@@ -60,18 +60,17 @@ The `nasaapi.ipynb` notebook:
 ### Table: `close_approach`
 | neo_reference_id | approach_date | velocity_kmph | au | miss_km | miss_lunar | orbiting_body |
 
----
 
+---
 ## 🛠️ Setup & Installation
+
 
 ### 1. Clone the repo
 
 ```bash
 git clone [https://github.com/bhuvana87ps/NASA-Near-Earth-Object-NEO-Tracking-Insights-using-Public-API]
 cd nasa-neo-tracker
----
----
-
+ 
 ### 2. Install dependencies
 
 ```bash
