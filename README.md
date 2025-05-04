@@ -64,22 +64,6 @@ The `nasaapi.ipynb` notebook:
 ---
 ## 🛠️ Setup & Installation
 
-## 1. Clone the repo
-
-The `nasaapi.ipynb` notebook:
-- Fetches NEO data using NASA’s API
-- Parses up to **10,000+** asteroid entries
-- Extracts properties:
-  - Name, magnitude, diameter, hazard status
-  - Velocity, distance, approach date
-- Loads into **MySQL** with two normalized tables:
-
-### Table: `asteroids`
-| id | name | magnitude | diameter_min_km | diameter_max_km | hazardous |
-
-### Table: `close_approach`
-| neo_reference_id | approach_date | velocity_kmph | au | miss_km | miss_lunar | orbiting_body |
-
 ### 1. Clone the repo
 
 ```bash
