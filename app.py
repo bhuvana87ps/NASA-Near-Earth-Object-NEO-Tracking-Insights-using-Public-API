@@ -3,7 +3,7 @@
 # --------- My first Project to submit in guvi---------
 # --------- Presented by Bhuvaneswari G---------
 
-# --------- SETUP PACKAGES---------
+# --------- SETUP PACKAGES--------- check requirment.tx
 import streamlit as st
 import pandas as pd
 import time
