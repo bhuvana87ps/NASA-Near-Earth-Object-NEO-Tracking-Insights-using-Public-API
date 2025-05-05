@@ -3,11 +3,12 @@ import streamlit as st
 import pandas as pd
 import time
 import pymysql
-import plotly.express as px 
+import plotly.express as px
+import numpy as np
 from streamlit_option_menu import option_menu 
 
 
-# First command must be page config used wide or centered, anyone
+# Display : wide or centered, anyone
 st.set_page_config(page_title="🚀 NASA NEO Tracker", layout="wide")
 #st.set_page_config(page_title="🚀 NASA NEO Tracker", layout="centered")
 
@@ -25,11 +26,54 @@ with st.sidebar:
         menu_icon="rocket",
         default_index=0,
     )
-
 # --------- WELCOME MESSAGE ---------
+import streamlit as st
+
+# --------- HEADER PUSH NOTIFICATION ---------
 if 'welcome_shown' not in st.session_state:
-    st.success("👋 Welcome to the NASA NEO Tracker App! Explore asteroid approaches, filter insights, and stay updated with near-Earth data!", icon="🚀")
+    st.markdown(
+        """
+        <div style='
+            background-color: #d1e7dd;
+            color: #0f5132;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 8px solid #0f5132;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        '>
+            🚀 <strong>Welcome to the NASA NEO Tracker App!</strong><br>
+            👋 Explore asteroid approaches, filter insights, and stay updated with near-Earth data!<br>
+            👩 Project 1 Submitted on Guvi Presented by Bhuvaneswari G
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     st.session_state['welcome_shown'] = True
+if 'welcome_shown' not in st.session_state or not st.session_state['welcome_shown']:
+    col1, col2 = st.columns([10, 1])
+    with col1:
+        st.markdown(
+            """
+            <div style='
+                background-color: #d1e7dd;
+                color: #0f5132;
+                padding: 1rem;
+                border-radius: 10px;
+                border-left: 8px solid #0f5132;
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            '>
+                🚀 <strong>Welcome to the NASA NEO Tracker App!</strong><br>
+                👋 Explore asteroid approaches, filter insights, and stay updated with near-Earth data!
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with col2:
+        if st.button("❌", key="dismiss_welcome"):
+            st.session_state['welcome_shown'] = True
+
 
 # --------- DATABASE CONNECTION FUNCTION ---------
 import pymysql
@@ -86,8 +130,72 @@ if selected == "Dashboard":
     col2.metric(label="☄️ Hazardous Asteroids", value=f"{hazardous}")
     col3.metric(label="🚀 Fastest Velocity", value=f"{fastest:,.0f} km/h")
 
-    # Line Chart for Asteroid Approaches Over Time
-     
+        
+    # --- Dashboard data fetch for Graph
+    @st.cache_data
+    def load_data():
+        try:
+            conn = get_connection()
+            # Test simple queries
+            df_asteroids = pd.read_sql("select * from nasa.asteroids", conn)
+            df_close = pd.read_sql("SELECT * FROM close_approach", conn)
+            conn.close()
+    
+
+            return df_asteroids, df_close
+        except Exception as e:
+            st.error(f"Error fetching data: {e}")
+            return pd.DataFrame(), pd.DataFrame()
+
+    
+    try:
+        df_asteroids, df_close = load_data()
+        #st.success(f"✅ Loaded {len(df_asteroids)} asteroids and {len(df_close)} close approach records.")
+    except Exception as e:
+        st.error(f"❌ Error loading data: {e}")
+        st.stop()
+    
+
+    # --- Charts and Visualizations
+    st.subheader("📊 Visual Insights")
+
+    # --- First Row: Two charts side-by-side
+    col1, col2 = st.columns(2)
+
+    with col1:
+        fig1 = px.histogram(df_asteroids, x="estimated_diameter_max_km", nbins=50, title="Distribution of Maximum Diameter (km)", color_discrete_sequence=["#636EFA"])
+        st.plotly_chart(fig1, use_container_width=True)
+
+    with col2:
+        hazardous_counts = df_asteroids['is_potentially_hazardous_asteroid'].value_counts().reset_index()
+        hazardous_counts.columns = ['Hazardous', 'Count']
+        hazardous_counts['Hazardous'] = hazardous_counts['Hazardous'].replace({1: 'Hazardous', 0: 'Non-Hazardous'})
+        
+        fig2 = px.pie(hazardous_counts, names='Hazardous', values='Count', title="Hazardous vs Non-Hazardous", color_discrete_sequence=["#EF553B", "#00CC96"])
+        st.plotly_chart(fig2, use_container_width=True)
+
+    # --- Second Row: Two charts side-by-side
+    col3, col4 = st.columns(2)
+
+    with col3:
+        fig3 = px.scatter(df_asteroids, x="absolute_magnitude_h", y="estimated_diameter_max_km",
+                        color="is_potentially_hazardous_asteroid",
+                        labels={"absolute_magnitude_h": "Absolute Magnitude", "estimated_diameter_max_km": "Max Diameter (km)"},
+                        title="Asteroid Magnitude vs Diameter", color_discrete_map={1: "#EF553B", 0: "#00CC96"})
+        st.plotly_chart(fig3, use_container_width=True)
+
+    with col4:
+        fig4 = px.histogram(df_close, x="miss_distance_km", nbins=50, title="Close Approach Miss Distance (km)", color_discrete_sequence=["#AB63FA"])
+        st.plotly_chart(fig4, use_container_width=True)
+
+    # --- Third Row: One full-width chart
+    st.subheader("⚡ Relative Velocity Distribution")
+    fig5 = px.histogram(df_close, x="relative_velocity_kmph", nbins=50, title="Relative Velocity (km/h)", color_discrete_sequence=["#FFA15A"])
+    st.plotly_chart(fig5, use_container_width=True)
+
+    
+
+        
 
 elif selected == "Filter Criteria":
     # FILTER PAGE
